@@ -619,7 +619,7 @@ unsigned int disassemble(unsigned char *bytes, unsigned int max, int offset, cha
 			}
 		} else if (modRM_mod == 0b10) { // Four-byte signed displacement follows addressing mode byte(s).
 			if (*(unsigned int *)bytes > 0x7FFFFFFF) {
-				sprintf(RM_output + strlen(RM_output), "-0x%x]", *(unsigned int *)bytes);
+				sprintf(RM_output + strlen(RM_output), "-0x%x]", -*(int *)bytes);
 			} else {
 				sprintf(RM_output + strlen(RM_output), "+0x%x]", *(unsigned int *)bytes);
 			}
