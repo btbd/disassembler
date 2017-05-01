@@ -3,7 +3,7 @@
 unsigned int disassemble(unsigned char *bytes, unsigned int max, int offset, char *output) {
 	static char register_mnemonics8[][0xF] = { "al", "cl", "dl", "bl", "ah", "ch", "dh", "bh" };
 	static char register_mnemonics16[][0xF] = { "ax", "cx", "dx", "bx", "ax", "cx", "dx", "bx" };
-	static char	register_mnemonics32[][0xF] = { "eax", "ecx", "edx", "ebx", "esp", "ebp", "esi", "edi" };
+	static char register_mnemonics32[][0xF] = { "eax", "ecx", "edx", "ebx", "esp", "ebp", "esi", "edi" };
 
 	static char sib_base_mnemonics[][0xF] = { "[eax", "[ecx", "[edx", "[ebx", "[esp", "[ebp", "[esi", "[edi" };
 	static char sib_scale_mnemonics[][0xF] = { "*1", "*2", "*4", "*8" };
