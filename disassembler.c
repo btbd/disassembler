@@ -3,9 +3,9 @@
 unsigned int disassemble(unsigned char *bytes, unsigned int max, int offset, char *output) {
 	static char register_mnemonics8[][0xF] = { "al", "cl", "dl", "bl", "ah", "ch", "dh", "bh" };
 	static char register_mnemonics16[][0xF] = { "ax", "cx", "dx", "bx", "ax", "cx", "dx", "bx" };
-	static char register_mnemonics32[][0xF] = { "eax", "ecx", "edx", "ebx", "esp", "ebp", "esi", "edi" };
+	static char	register_mnemonics32[][0xF] = { "eax", "ecx", "edx", "ebx", "esp", "ebp", "esi", "edi" };
 
-	static char sib_base_mnemonics[][0xF] = { "[eax+", "[ecx+", "[edx+", "[ebx+", "[esp+", "[ebp+", "[esi+", "[edi+" };
+	static char sib_base_mnemonics[][0xF] = { "[eax", "[ecx", "[edx", "[ebx", "[esp", "[ebp", "[esi", "[edi" };
 	static char sib_scale_mnemonics[][0xF] = { "*1", "*2", "*4", "*8" };
 
 	enum {
@@ -594,10 +594,6 @@ unsigned int disassemble(unsigned char *bytes, unsigned int max, int offset, cha
 			char SIB_index = ((*bytes) >> 3) & 0b111; // Bits 5-3.
 			char SIB_base = (*bytes++) & 0b111; // Bits 2-0.
 
-			if (SIB_index == 0b100) { // Illegal SIB byte
-				goto ILLEGAL;
-			}
-
 			if (SIB_base == 0b101 && modRM_mod == 0b00) {
 				sprintf(RM_output, "[0x%x", *(int *)bytes);
 				bytes += 4;
@@ -605,8 +601,11 @@ unsigned int disassemble(unsigned char *bytes, unsigned int max, int offset, cha
 				strcpy(RM_output, sib_base_mnemonics[SIB_base]);
 			}
 
-			strcat(RM_output, register_mnemonics32[SIB_index]);
-			strcat(RM_output, sib_scale_mnemonics[SIB_scale]);
+			if (SIB_index != 0b100) {
+				strcat(RM_output, "+");
+				strcat(RM_output, register_mnemonics32[SIB_index]);
+				strcat(RM_output, sib_scale_mnemonics[SIB_scale]);
+			}
 		} else {
 			sprintf(RM_output, "[%s", register_mnemonics32[modRM_rm]);
 		}
