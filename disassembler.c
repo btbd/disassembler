@@ -716,7 +716,7 @@ OUTPUT:
 				strcat(output, "xmm0");
 				break;
 			case BND0:
-				strcat(output, "bdn0");
+				strcat(output, "bnd0");
 				break;
 			case BAD:
 				bytes++;
